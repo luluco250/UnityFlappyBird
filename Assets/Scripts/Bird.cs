@@ -4,7 +4,12 @@ using static UnityEngine.Mathf;
 
 public class Bird : MonoBehaviour {
 	public float jumpVelocity = 5f;
+
+	[Range(1f, 10f)]
 	public float rotationVelocity = 3f;
+
+	[Range(0.0f, 1.0f)]
+	public float rotationFallTime = 0.4f;
 
 	[Range(0f, 180f)]
 	public float rotationTopAngle = 35f;
@@ -12,7 +17,7 @@ public class Bird : MonoBehaviour {
 	public float rotationBottomAngle = -70f;
 
 	float rotation;
-	float rotVel;
+	float rotTime;
 	
 	public Vector2 startViewportPos = new Vector2(0.5f, 0.5f);
 	Vector3 startPos;
@@ -31,17 +36,17 @@ public class Bird : MonoBehaviour {
 	}
 
 	void Update() {
-		//rotVel += rotationVelocity * Time.deltaTime;
-		//rotation = Max(rotationBottomAngle, rotation - rotVel);
-
-		rotation -= (rotation - rotationTopAngle) * Time.deltaTime; //(rotationBottomAngle - rotation) * Time.deltaTime;
+		if (Time.time - rotTime > rotationFallTime)
+			rotation = Max(rotationBottomAngle, rotation - rotationVelocity * Time.deltaTime);
+		else
+			rotation = Min(rotationTopAngle, rotation + rotationVelocity * Time.deltaTime);
 
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			Game.isPlaying = rb2d.simulated = true;
 
 			rb2d.velocity = Vector2.up * jumpVelocity;
-			rotation = rotationTopAngle;
-			rotVel = 0f;
+			rotation = -rotationTopAngle;
+			rotTime = Time.time;
 		} else if (!Game.isPlaying) {
 			var pos = transform.position;
 			pos.y = Sin(Time.time * 4f) * 0.15f;
@@ -55,7 +60,6 @@ public class Bird : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D c) {
-		return;
 		if (c.transform.tag == "Pipe") {
 			// Resetar estado do jogo.
 			Game.isPlaying = false;

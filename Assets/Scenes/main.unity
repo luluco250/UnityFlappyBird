@@ -688,7 +688,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpVelocity: 10
-  rotationVelocity: 100
+  rotationVelocity: 500
+  rotationFallTime: 0.4
   rotationTopAngle: 35
   rotationBottomAngle: -70
   startViewportPos: {x: 0.25, y: 0.5}
