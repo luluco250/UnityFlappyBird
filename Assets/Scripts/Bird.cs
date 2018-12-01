@@ -77,6 +77,7 @@ public class Bird : MonoBehaviour {
 			transform.position = startPos;
 
 			// Resetar pontuação.
+			ScoreSystem.SaveHighScore();
 			ScoreSystem.ResetScore();
 		}
 	}

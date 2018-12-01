@@ -26,6 +26,7 @@ public class ScoreSystem : MonoBehaviour {
     }
 
     void Start() {
+        highscore = PlayerPrefs.GetInt("highscore");
         ResetScore();
     }
 
@@ -42,5 +43,9 @@ public class ScoreSystem : MonoBehaviour {
     public static void ResetScore() {
         score = 0;
         Get().scoreText.text = $"Score: 0\nHighscore: {highscore}";
+    }
+
+    public static void SaveHighScore() {
+        PlayerPrefs.SetInt("highscore", highscore);
     }
 }
